@@ -47,7 +47,7 @@ pip & venv
 **Installation:**
 
 Clone the repository:
-git clone https://github.com/your-username/graphy.io.git
+git clone https://github.com/kaun-neel/graphy.io.git
 cd graphy.io
 
 Create and activate a virtual environment:
