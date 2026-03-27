@@ -6,24 +6,22 @@ import torch_geometric.transforms as T
 from sklearn.manifold import TSNE 
 import matplotlib.pyplot as plt 
 
-# --- 1. Load the Cora Dataset (remains the same) ---
 dataset = Planetoid(root='./data/Cora', name='Cora', transform=T.NormalizeFeatures())
 data = dataset[0]
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-data = data.to(device) # Move data to device once
+data = data.to(device) 
 
-# --- 2. Define the GCN Model (remains the same) ---
 class GCN(torch.nn.Module):
-    def __init__(self, in_channels, hidden_channels, out_channels, dropout_rate): # Add dropout_rate here
+    def __init__(self, in_channels, hidden_channels, out_channels, dropout_rate):
         super().__init__()
         self.conv1 = GCNConv(in_channels, hidden_channels)
         self.conv2 = GCNConv(hidden_channels, out_channels)
-        self.dropout_rate = dropout_rate # Store dropout rate
+        self.dropout_rate = dropout_rate 
 
     def forward(self, x, edge_index):
         x = self.conv1(x, edge_index)
         x = F.relu(x)
-        x = F.dropout(x, p=self.dropout_rate, training=self.training) # Use stored dropout_rate
+        x = F.dropout(x, p=self.dropout_rate, training=self.training) 
         x = self.conv2(x, edge_index)
         return x
 
@@ -32,7 +30,7 @@ class GCN_3Layer(torch.nn.Module):
         super().__init__()
         self.conv1 = GCNConv(in_channels, hidden1)
         self.conv2 = GCNConv(hidden1, hidden2)
-        self.conv3 = GCNConv(hidden2, out_channels) # New layer
+        self.conv3 = GCNConv(hidden2, out_channels) 
         self.dropout_rate = dropout_rate
 
     def forward(self, x, edge_index):
@@ -45,13 +43,12 @@ class GCN_3Layer(torch.nn.Module):
         x = self.conv3(x, edge_index)
         return x
 
-# --- Function to run a full training and evaluation cycle ---
 def run_experiment(hidden_channels_config, lr_config, dropout_rate_config, num_epochs=200):
     print(f"\n--- Running Experiment: HC={hidden_channels_config}, LR={lr_config}, Dropout={dropout_rate_config} ---")
     model = GCN(in_channels=dataset.num_features,
                 hidden_channels=hidden_channels_config,
                 out_channels=dataset.num_classes,
-                dropout_rate=dropout_rate_config).to(device) # Pass dropout_rate
+                dropout_rate=dropout_rate_config).to(device) 
 
     optimizer = torch.optim.Adam(model.parameters(), lr=lr_config, weight_decay=5e-4)
     criterion = torch.nn.CrossEntropyLoss()
@@ -61,7 +58,6 @@ def run_experiment(hidden_channels_config, lr_config, dropout_rate_config, num_e
     test_acc_at_best_val = 0.0
 
     for epoch in range(1, num_epochs + 1):
-        # --- Train ---
         model.train()
         optimizer.zero_grad()
         out_logits = model(data.x, data.edge_index)
@@ -69,8 +65,7 @@ def run_experiment(hidden_channels_config, lr_config, dropout_rate_config, num_e
         loss.backward()
         optimizer.step()
 
-        # --- Test (Evaluate) ---
-        if epoch % 10 == 0 or epoch == 1 or epoch == num_epochs: # Evaluate periodically
+        if epoch % 10 == 0 or epoch == 1 or epoch == num_epochs:
             model.eval()
             with torch.no_grad():
                 eval_logits = model(data.x, data.edge_index)
@@ -86,14 +81,13 @@ def run_experiment(hidden_channels_config, lr_config, dropout_rate_config, num_e
 
             if current_val_acc > best_val_acc_for_run:
                 best_val_acc_for_run = current_val_acc
-                test_acc_at_best_val = current_test_acc # Store test acc when val acc is best
+                test_acc_at_best_val = current_test_acc 
                 best_model_state_for_run = model.state_dict().copy()
                 
     
     print(f"Finished run. Best Val Acc for this run: {best_val_acc_for_run:.4f}, Corresponding Test Acc: {test_acc_at_best_val:.4f}")
-    return best_val_acc_for_run, test_acc_at_best_val, best_model_state_for_run, model # Return the last model too
+    return best_val_acc_for_run, test_acc_at_best_val, best_model_state_for_run, model 
 
-# --- Hyperparameter Grid ---
 hidden_channels_options = [16, 32, 64]
 learning_rate_options = [0.01, 0.005, 0.001]
 dropout_rate_options = [0.3, 0.5, 0.7] 
@@ -101,9 +95,8 @@ best_overall_val_acc = 0.0
 best_hyperparameters = {}
 best_model_state_overall = None
 final_test_acc_for_best_model = 0.0
-best_model_for_viz = None # To store the best model object for later visualization
+best_model_for_viz = None 
 
-# --- Main Loop for Hyperparameter Tuning ---
 print("=" * 50)
 print("Starting Hyperparameter Tuning...")
 print("=" * 50)
