@@ -6,9 +6,9 @@ import torch_geometric.transforms as T
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
-# --- 1. Load the Cora Dataset ---
+
 dataset = Planetoid(root='./data/Cora', name='Cora', transform=T.NormalizeFeatures())
-data = dataset[0]  # Get the single graph object.
+data = dataset[0]  
 
 print(f"Dataset: {dataset}")
 print(f"Number of graphs: {len(dataset)}")
@@ -27,7 +27,6 @@ print(f"Test nodes: {data.test_mask.sum().item()}")
 print("-" * 50)
 
 
-# --- 2. Define the GCN Model ---
 class GCN(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels):
         super().__init__()
@@ -35,18 +34,15 @@ class GCN(torch.nn.Module):
         self.conv2 = GCNConv(hidden_channels, out_channels)
     
     def forward(self, x, edge_index):       
-        # First GCN layer
+        #First GCN layer
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = F.dropout(x, p=0.5, training=self.training)
-        # Second GCN layer
+        #Second GCN layer
         x = self.conv2(x, edge_index)
         return x
 
 
-# --- 3. Instantiate the Model & Prepare for Training ---
-
-# Determine device (use GPU if available, otherwise CPU)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
@@ -54,30 +50,25 @@ print(f"Using device: {device}")
 num_node_features = dataset.num_features
 num_classes = dataset.num_classes
 hidden_channels = 16  
-
-# Create the model instance
 model = GCN(in_channels=num_node_features,
             hidden_channels=hidden_channels,
             out_channels=num_classes)
 
-# Move the model and data to the selected device
 model = model.to(device)
 data = data.to(device)
 
-# Print the model structure
+
 print("-" * 50)
 print("Model Architecture:")
 print(model)
 print("-" * 50)
 
-# --- 4. Perform a Single Forward Pass ---
-model.eval() # Sets self.training to False
 
-# No gradients needed for just a forward pass test
+model.eval() 
 with torch.no_grad():
     out_logits = model(data.x, data.edge_index)
 
-print(f"Output logits shape: {out_logits.shape}") # Expected: [num_nodes, num_classes] -> [2708, 7]
+print(f"Output logits shape: {out_logits.shape}") 
 print("Sample output logits (first 5 nodes):")
 print(out_logits[:5])
 print("-" * 50)
@@ -109,10 +100,10 @@ def test():
 
     return val_acc, test_acc
 
-# --- Main Training Loop ---
+
 num_epochs = 200
 best_val_acc = 0.0
-best_model_state = None #To store the weights of the best model
+best_model_state = None 
 
 print("-" * 50)
 print("Starting training...")
@@ -120,28 +111,26 @@ for epoch in range(1, num_epochs + 1):
     loss = train()
     
     if epoch % 10 == 0 or epoch == 1 or epoch == num_epochs:
-        val_acc, current_test_acc = test() # Get current test accuracy along with val_acc
+        val_acc, current_test_acc = test() 
         print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Val Acc: {val_acc:.4f}, Test Acc (current): {current_test_acc:.4f}')
         
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            best_model_state = model.state_dict().copy() # Save the model's weights
+            best_model_state = model.state_dict().copy() 
             print(f"*** New best validation accuracy: {best_val_acc:.4f} (at epoch {epoch}) ***")
             
-    elif epoch % 1 == 0: # Log loss more frequently
+    elif epoch % 1 == 0: 
          print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}')
 
 print("-" * 50)
 print("Training finished!")
 
-# Load the best model state before final evaluation
 if best_model_state:
     model.load_state_dict(best_model_state)
     print("Loaded best model weights based on validation accuracy.")
 
-# Final evaluation on the test set using the BEST model
 final_val_acc, final_test_acc = test()
-print(f'Final Validation Accuracy (best model): {final_val_acc:.4f}') # Should be your best_val_acc
+print(f'Final Validation Accuracy (best model): {final_val_acc:.4f}') 
 print(f'Final Test Accuracy (best model): {final_test_acc:.4f}')
 print("-" * 50)
 
@@ -157,25 +146,23 @@ true_labels = data.y.cpu().numpy()
 
 print("-" * 50)
 print("Preparing for t-SNE visualization...")
-print(f"Shape of embeddings for t-SNE: {embeddings_to_visualize.shape}") # Should be [2708, hidden_channels]
+print(f"Shape of embeddings for t-SNE: {embeddings_to_visualize.shape}") 
 print(f"Shape of true labels: {true_labels.shape}")
 
 #Applying t-SNE
 from sklearn.manifold import TSNE
-import matplotlib.pyplot as plt # Import for plotting
+import matplotlib.pyplot as plt 
 
-tsne = TSNE(n_components=2, perplexity=30, random_state=42, n_iter=300) # n_iter can be increased for better convergence
+tsne = TSNE(n_components=2, perplexity=30, random_state=42, n_iter=300) 
 embeddings_2d = tsne.fit_transform(embeddings_to_visualize)
 
-print(f"Shape of 2D embeddings after t-SNE: {embeddings_2d.shape}") # Should be [2708, 2]
+print(f"Shape of 2D embeddings after t-SNE: {embeddings_2d.shape}") 
 print("t-SNE transformation complete.")
 print("-" * 50)
 
 #Plotting the 2D Embeddings
 plt.figure(figsize=(10, 8))
-# Scatter plot:
 scatter = plt.scatter(embeddings_2d[:, 0], embeddings_2d[:, 1], c=true_labels, cmap='jet', s=10)
-# Create a legend with unique class labels
 handles, _ = scatter.legend_elements(prop='colors')
 legend_labels = [f'Community {i}' for i in range(dataset.num_classes)]
 plt.legend(handles, legend_labels, title="Communities")
