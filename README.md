@@ -1,108 +1,168 @@
-**Graphy.io:**** Social Network Analysis with Graph Neural Networks**
-A project dedicated to exploring social network dynamics using advanced Graph Neural Networks (GNNs). Graphy.io leverages graph machine learning models like GCN and GraphSAGE to uncover hidden patterns, detect communities, predict connections, and identify key influencers within complex relational datasets.
+<div align="center">
 
-**📖 Abstract :**
-In the interconnected world of social media, understanding the structure and dynamics of networks is crucial. Traditional machine learning models often fall short when dealing with graph-structured data. This project demonstrates the power of Graph Neural Networks (GNNs) to perform sophisticated analysis on social graphs, such as Twitter's follower/following network. By representing users as nodes and relationships as edges, we can apply models like Graph Convolutional Networks (GCN) and GraphSAGE to tackle complex tasks that are intractable for standard ML techniques. This work serves as a practical illustration of applying advanced graph AI to real-world relational data.
+```
+   ██████╗ ██████╗  █████╗ ██████╗ ██╗  ██╗██╗   ██╗   ██╗ ██████╗
+  ██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██║  ██║╚██╗ ██╔╝   ██║██╔═══██╗
+  ██║  ███╗██████╔╝███████║██████╔╝███████║ ╚████╔╝    ██║██║   ██║
+  ██║   ██║██╔══██╗██╔══██║██╔═══╝ ██╔══██║  ╚██╔╝     ██║██║   ██║
+  ╚██████╔╝██║  ██║██║  ██║██║     ██║  ██║   ██║  ██╗ ██║╚██████╔╝
+   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝   ╚═╝  ╚═╝╚═╝ ╚═════╝
+```
 
-**✨ Key Features**
-Community Detection: Identify densely connected clusters of users or communities within the network.
+**Social Network Analysis with Graph Neural Networks**
 
-Link Prediction: Recommend new connections or friendships between users who are likely to interact.
+![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
+![PyG](https://img.shields.io/badge/PyTorch_Geometric-3C2179?style=flat-square&logo=pytorch&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-10b981?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Active-00e5ff?style=flat-square)
 
-Influencer Identification: Pinpoint the most central and influential nodes in the graph based on network topology and features.
+*Uncovering hidden patterns in complex relational data using GCN & GraphSAGE*
 
-Node Classification: Categorize nodes (e.g., users, papers) based on their connections and attributes.
+</div>
 
-High-Dimensional Visualization: Visualize learned node embeddings using techniques like t-SNE to intuitively understand graph structure.
+---
 
-**🛠️ Tech Stack & Key Tools**
---Python
---PyTorch
---PyTorch Geometric (PyG)
---NetworkX (NX)
---scikit-learn
---NumPy & Pandas
---Matplotlib & Seaborn
---Git & GitHub
+## 📖 Abstract
 
-**Legend / Key Models**
---GNN: Graph Neural Network
---GCN: Graph Convolutional Network
---GraphSAGE: Graph Sample and Aggregate
---Metrics: Accuracy, F1-Score, AUC, Normalized Mutual Information (NMI), Mean Squared Error (MSE)
+In the interconnected world of social media, understanding the structure and dynamics of networks is crucial. Traditional machine learning models often fall short when dealing with graph-structured data.
 
-**🚀 Project Goals**
-Implement GNN Models: Build and train GCN and GraphSAGE models for node classification and link prediction tasks.
-Analyze Real-World Data: Apply these models to standard citation networks (like Cora) and potentially larger social network datasets.
-Evaluate Performance: Rigorously evaluate the models using a standard set of performance metrics.
-Visualize Insights: Generate meaningful visualizations that make the model's learnings and the network structure interpretable.
+Graphy.io demonstrates the power of **Graph Neural Networks (GNNs)** on social graphs — representing users as **nodes** and relationships as **edges** — to tackle tasks intractable for standard ML. By applying models like GCN and GraphSAGE to Twitter's follower network or citation graphs like Cora, we unlock a new class of relational intelligence.
 
-**⚙️ Installation & Setup**
-To get a local copy up and running, follow these simple steps.
+---
 
-**Prerequisites:**
-Python 3.8+
-pip & venv
+## ✨ Key Features
 
-**Installation:**
+| Feature | Description |
+|---|---|
+| 🔍 **Community Detection** | Identify densely connected clusters of users within the network |
+| 🔗 **Link Prediction** | Recommend new connections between users likely to interact |
+| ⭐ **Influencer Identification** | Pinpoint the most central nodes based on network topology |
+| 🏷️ **Node Classification** | Categorize nodes based on connections and attributes |
+| 📊 **t-SNE Visualization** | Visualize high-dimensional embeddings reduced to 2D |
+| 📈 **Rigorous Evaluation** | Benchmark with Accuracy, F1, AUC, NMI, and MSE |
 
-Clone the repository:
+---
+
+## 🛠️ Tech Stack
+
+```
+Language   →  Python 3.8+
+DL Framework →  PyTorch
+Graph ML   →  PyTorch Geometric (PyG)
+Graph Ops  →  NetworkX
+ML Toolkit →  scikit-learn
+Numerics   →  NumPy · Pandas
+Plotting   →  Matplotlib · Seaborn
+Versioning →  Git & GitHub
+```
+
+---
+
+## 🧠 Models & Notation
+
+### GCN — Graph Convolutional Network
+Aggregates neighbourhood features via spectral convolutions. Strong baseline for **transductive** node classification tasks.
+
+### GraphSAGE — Graph Sample and Aggregate
+Inductive framework that samples and aggregates from local neighbourhoods. Scales to **unseen nodes** at inference time.
+
+**Evaluation Metrics:** `Accuracy` · `F1-Score` · `AUC` · `NMI` (Normalized Mutual Information) · `MSE`
+
+---
+
+## ⚙️ Installation & Setup
+
+**Prerequisites:** Python 3.8+ · pip · venv
+
+```bash
+# 1. Clone the repository
 git clone https://github.com/kaun-neel/graphy.io.git
 cd graphy.io
 
-Create and activate a virtual environment:
+# 2. Create and activate a virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+source venv/bin/activate        # Windows: venv\Scripts\activate
 
-Install the required packages:
+# 3. Install PyTorch for your system / CUDA version
+#    → https://pytorch.org/get-started/locally/
 
-First, install PyTorch based on your system/CUDA version. Visit the official PyTorch website for the correct command.
-
-Then, install PyTorch Geometric and other dependencies:
-
+# 4. Install PyTorch Geometric
 pip install torch_geometric
+
+# 5. Install remaining dependencies
 pip install -r requirements.txt
+# numpy · pandas · networkx · scikit-learn · matplotlib · seaborn
+```
 
-(Note: requirements.txt should contain numpy, pandas, networkx, scikit-learn, matplotlib, seaborn)
+---
 
-**📈 Results & Evaluation**
-Our implementation of a Graph Convolutional Network (GCN) on the Cora dataset demonstrates the effectiveness of GNNs for node classification. The Cora dataset consists of scientific publications linked by citations. The task is to predict the topic category for each paper.
+## 📈 Results
 
-Test Accuracy: The GCN model achieved ~80.2% accuracy on the test set.
+> **Dataset:** Cora — 2,708 nodes · 5,429 edges · 7 topic categories  
+> **Task:** Node classification (predict paper topic)  
+> **Model:** Graph Convolutional Network (GCN)
 
-Here's a t-SNE visualization of the learned node embeddings:
-![t-SNE Visualization of Cora Embeddings](images/gcn_cora_tsne_embeddings.png)
+```
+Test Accuracy  ████████████████████████░░░░░  80.2%
+```
 
+The t-SNE plot of learned embeddings shows **clear clustering by paper category**, confirming the model has successfully learned to group topically similar papers together in the embedding space.
 
-t-SNE Visualization of Node Embeddings
-The following t-SNE plot visualizes the 7-dimensional node embeddings learned by the GCN model, reduced to 2 dimensions. Each color represents a different paper category. The clear clustering indicates that the model has successfully learned to group papers with similar topics together in the embedding space.
+![t-SNE Visualization](images/gcn_cora_tsne_embeddings.png)
 
-**💡 Future Work**
-Experiment with GraphSAGE: Implement and compare the performance of GraphSAGE for inductive learning scenarios.
+---
 
-Scale to Larger Graphs: Apply the models to larger, more complex social network datasets like a subset of Twitter or Reddit.
+## 🚀 Project Goals
 
-Hyperparameter Tuning: Use techniques like Optuna or Ray Tune to find the optimal hyperparameters for the GNN models.
+- [x] Implement GCN for node classification on citation networks
+- [x] Evaluate with standard metrics (Accuracy, F1, AUC, NMI)
+- [x] Visualize learned embeddings with t-SNE
+- [ ] Implement GraphSAGE for inductive learning
+- [ ] Scale to larger social network datasets (Twitter, Reddit)
+- [ ] Hyperparameter tuning with Optuna / Ray Tune
+- [ ] Deploy as a REST API with FastAPI or Flask
 
-Deploy as a Web Service: Create a simple API using FastAPI or Flask to serve predictions (e.g., recommend a connection for a given user).
+---
 
-**🤝 Contributing**
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+## 💡 Future Work
 
-Fork the Project
+1. **GraphSAGE Experiments** — Implement and benchmark inductive learning against GCN
+2. **Larger Graphs** — Apply to Twitter or Reddit subsets for real-world scale
+3. **Hyperparameter Tuning** — Automate search with Optuna or Ray Tune
+4. **Web Service** — Serve predictions (e.g., connection recommendations) via FastAPI
 
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
+---
 
-Commit your Changes (git commit -m 'Add some AmazingFeature')
+## 🤝 Contributing
 
-Push to the Branch (git push origin feature/AmazingFeature)
+Contributions are greatly appreciated! Here's the workflow:
 
-Open a Pull Request
+```bash
+# 1. Fork the project, then:
+git checkout -b feature/YourFeatureName
 
-**📄 License**
-Distributed under the MIT License. See LICENSE for more information.
+# 2. Make your changes and commit
+git commit -m 'Add some AmazingFeature'
 
-**📧 Contact**
-Indraneel Bose – @kaun-neel – indraneelbose89191@gmail.com
+# 3. Push and open a Pull Request
+git push origin feature/YourFeatureName
+```
 
-Project Link: https://github.com/kaun-neel/graphy.io
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
+
+---
+
+<div align="center">
+
+**Indraneel Bose**
+
+[![GitHub](https://img.shields.io/badge/GitHub-@kaun--neel-181717?style=flat-square&logo=github)](https://github.com/kaun-neel)
+[![Email](https://img.shields.io/badge/Email-indraneelbose89191@gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:indraneelbose89191@gmail.com)
+[![Project](https://img.shields.io/badge/Project-graphy.io-00e5ff?style=flat-square)](https://github.com/kaun-neel/graphy.io)
+
+</div>
